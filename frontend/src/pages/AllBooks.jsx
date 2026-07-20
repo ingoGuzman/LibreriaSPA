@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import useFavorites from '../utils/useFavorites.jsx'
 import useCart from '../utils/cart.jsx'
-import BookCard from '../components/BookCard.jsx'
+import BookGrid from '../components/BookGrid.jsx'
+import SectionHeader from '../components/SectionHeader.jsx'
 import BookForm from '../components/BookForm.jsx'
 import { loadLocalBooks, addLocalBook, updateLocalBook, deleteLocalBook } from '../utils/localBooks.jsx'
 
@@ -83,18 +84,14 @@ export default function AllBooks() {
         <p className="error">{error}</p>
       ) : (
         <>
-          <h3>Libros desde la API</h3>
+          <SectionHeader title="Libros desde la API" subtitle="Catálogo oficial del proveedor central" />
           {books.length === 0 ? (
             <p>No hay libros disponibles desde la API.</p>
           ) : (
-            <div className="grid">
-              {books.map((b) => (
-                <BookCard key={b.id} book={{ ...b, source: 'api' }} onToggle={toggle} onAdd={add} />
-              ))}
-            </div>
+            <BookGrid books={books.map((b) => ({ ...b, source: 'api' }))} onToggle={toggle} onAdd={add} emptyText="No hay libros disponibles desde la API." />
           )}
 
-          <h3>Libros locales</h3>
+          <SectionHeader title="Libros locales" subtitle="Registros creados manualmente y guardados en el navegador" />
           {localBooks.length === 0 ? (
             <p>No hay libros locales agregados.</p>
           ) : (

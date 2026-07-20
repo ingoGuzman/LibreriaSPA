@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react'
 import useFavorites from '../utils/useFavorites.jsx'
 import useCart from '../utils/cart.jsx'
 import BookCard from '../components/BookCard.jsx'
-import { getQuotes } from '../utils/quotes.js'
 
 export default function MyBooks() {
   const { favorites, toggle } = useFavorites()
   const { add } = useCart()
   const [books, setBooks] = useState([])
-  const [quotes, setQuotes] = useState([])
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')

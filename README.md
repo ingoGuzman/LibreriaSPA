@@ -6,16 +6,29 @@ Proyecto para una tienda de libros que funciona como proveedor de librerías má
 
 En este escenario, la librería mayorista necesita una interfaz que permita a clientes profesionales buscar libros disponibles en un catálogo central, marcar títulos relevantes, preparar cotizaciones y gestionar pedidos sin perder la información al recargar la página. Además, se busca separar claramente los libros que provienen de la API central de los títulos que el cliente agrega manualmente para su propio proceso.
 
+## Uso de IA
+
+El 100% del código de este proyecto fue generado y estructurado con apoyo de inteligencia artificial. La IA ayudó a proponer componentes reutilizables, formularios con validación, manejo de rutas y persistencia en `localStorage`, así como a documentar el funcionamiento del SPA. Fue especialmente util en mi aprendizaje de los Props, los States y los Effects.
+
 ## Descripción del frontend
 
 La aplicación se divide en las siguientes partes principales:
 
 - `src/main.jsx` — arranca la aplicación, envuelve la app con los providers de `Favorites` y `Cart` y monta el enrutador de React Router.
-- `src/App.jsx` — es el layout general. Contiene el header con la navegación y el selector de tema claro/oscuro. Renderiza las páginas de `Todos los libros` y `Mis libros`, y monta el componente `Cart` en la barra lateral.
-- `src/pages/AllBooks.jsx` — carga el catálogo de libros desde `/api/libros` usando `fetch`. Maneja los estados de carga y error, y muestra la lista de libros con `BookCard`.
-- `src/pages/MyBooks.jsx` — muestra los libros marcados como favoritos. También carga los mismos datos de la API y usa el estado de favoritos para filtrar la lista.
-- `src/components/BookCard.jsx` — representa cada libro con su título y autor. Permite marcar o desmarcar favoritos y agregar el libro al carrito.
-- `src/components/Cart.jsx` — muestra los items agregados al carrito, permite eliminar unidades, limpiar el carrito y solicitar una cotización local.
+- `src/App.jsx` — es el layout general. Contiene el `header` con la navegación, el botón de tema claro/oscuro, y renderiza las páginas de `Todos los libros`, `Mis libros` y `Mis cotizaciones`. También monta el componente `Cart` en la barra lateral y el `Footer` decorativo.
+- `src/pages/AllBooks.jsx` — página principal que muestra dos secciones: `Libros desde la API` y `Libros locales`. Carga el catálogo oficial desde `/api/libros`, maneja carga/error y permite crear, editar y eliminar libros locales.
+- `src/pages/MyBooks.jsx` — muestra los libros marcados como favoritos, filtrados a partir de los libros de la API.
+- `src/pages/Quotes.jsx` — muestra las cotizaciones generadas localmente y actualiza la lista cuando se crea una nueva cotización.
+- `src/components/BookCard.jsx` — representa cada libro con título, autor, etiqueta de origen (`API` o `Local`), botones para favoritos y para agregar al carrito.
+- `src/components/BookGrid.jsx` — renderiza una grilla reusable de tarjetas de libros.
+- `src/components/SectionHeader.jsx` — encabezado reutilizable de sección con título y subtítulo.
+- `src/components/BookForm.jsx` — formulario para agregar o editar libros locales con validación de campos obligatorios.
+- `src/components/Footer.jsx` — footer decorativo pequeño con nombre y fecha.
+- `src/components/Cart.jsx` — muestra los items agregados al carrito, permite eliminarlos, limpiar el carrito y preparar cotizaciones.
+- `src/utils/localBooks.jsx` — maneja el CRUD completo de libros locales en `localStorage`.
+- `src/utils/cart.jsx` — guarda y sincroniza los items del carrito en `localStorage`.
+- `src/utils/useFavorites.jsx` — guarda los favoritos en `localStorage` y expone la acción `toggle`.
+- `src/utils/quotes.js` — gestiona cotizaciones locales y emite eventos de actualización.
 
 ## Flujo de datos y estado
 
@@ -72,10 +85,17 @@ El selector de tema está en `src/App.jsx` y usa el atributo `data-theme` en el 
 - `frontend/src/App.jsx`
 - `frontend/src/pages/AllBooks.jsx`
 - `frontend/src/pages/MyBooks.jsx`
+- `frontend/src/pages/Quotes.jsx`
 - `frontend/src/components/BookCard.jsx`
+- `frontend/src/components/BookGrid.jsx`
+- `frontend/src/components/SectionHeader.jsx`
+- `frontend/src/components/BookForm.jsx`
 - `frontend/src/components/Cart.jsx`
+- `frontend/src/components/Footer.jsx`
+- `frontend/src/utils/localBooks.jsx`
 - `frontend/src/utils/cart.jsx`
 - `frontend/src/utils/useFavorites.jsx`
+- `frontend/src/utils/quotes.js`
 - `frontend/src/styles.css`
 
 ## Cómo correr solo el frontend

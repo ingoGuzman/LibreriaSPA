@@ -8,6 +8,7 @@ body{ font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helveti
 .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; padding:1rem 2rem }
 .book{ background:var(--card); padding:1rem; border-radius:8px; box-shadow:0 4px 14px rgba(79,70,229,0.08); border:1px solid var(--border); transition:transform .18s ease, box-shadow .18s ease, border .18s ease }
 .book.favorite{ border:2px solid var(--accent); box-shadow:0 10px 30px rgba(79,70,229,0.16); transform:translateY(-4px) }
+.source-label{ display:inline-block; background:rgba(79,70,229,0.08); color:var(--accent); margin-top:0.5rem; padding:0.2rem 0.5rem; border-radius:999px; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em }
 .book-actions{ display:flex; gap:0.5rem; margin-top:0.6rem }
 button{ background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.4rem 0.6rem; border-radius:6px; cursor:pointer; transition:background .12s ease, color .12s ease }
 button:hover{ background:var(--accent); color:#fff }

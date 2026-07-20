@@ -9,6 +9,7 @@ export default function BookCard({ book, onToggle, onAdd }) {
     <div className={isFav ? 'book favorite' : 'book'}>
       <h3>{book.nombre}</h3>
       <p>{book.autor}</p>
+      {book.source && <span className="source-label">{book.source === 'api' ? 'API' : 'Local'}</span>}
       <div className="book-actions">
         <button onClick={() => onToggle(book.id)}>{isFav ? 'Quitar favorito' : 'Agregar a favoritos'}</button>
         <button onClick={() => onAdd(book)} className="primary">Agregar al carrito</button>

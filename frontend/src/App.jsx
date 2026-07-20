@@ -4,6 +4,7 @@ import AllBooks from './pages/AllBooks'
 import MyBooks from './pages/MyBooks'
 import Quotes from './pages/Quotes'
 import Cart from './components/Cart'
+import Footer from './components/Footer.jsx'
 
 const STORAGE_KEY = 'tienda:theme'
 
@@ -48,6 +49,7 @@ export default function App() {
         </section>
         <Cart />
       </main>
+      <Footer />
     </div>
   )
 }
