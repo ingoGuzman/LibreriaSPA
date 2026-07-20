@@ -1,6 +1,10 @@
 # LibreríaSPA
 
-Proyecto de una SPA (Single Page Application) para una librería en línea con un frontend en React/Vite. El frontend consume datos de libros desde una API y gestiona el estado del carrito y favoritos en el navegador.
+Proyecto para una tienda de libros que funciona como proveedor de librerías más pequeñas. Se desarrolla un sistema de gestión que permite a los clientes preparar cotizaciones de los libros disponibles, manejar favoritos y gestionar un carrito de pedidos con persistencia local.
+
+## Contexto y problemática
+
+En este escenario, la librería mayorista necesita una interfaz que permita a clientes profesionales buscar libros disponibles en un catálogo central, marcar títulos relevantes, preparar cotizaciones y gestionar pedidos sin perder la información al recargar la página. Además, se busca separar claramente los libros que provienen de la API central de los títulos que el cliente agrega manualmente para su propio proceso.
 
 ## Descripción del frontend
 

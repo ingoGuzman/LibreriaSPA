@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import AllBooks from './pages/AllBooks'
 import MyBooks from './pages/MyBooks'
+import Quotes from './pages/Quotes'
 import Cart from './components/Cart'
 
 const STORAGE_KEY = 'tienda:theme'
@@ -29,6 +30,7 @@ export default function App() {
           <nav>
             <Link to="/">Todos los libros</Link>
             <Link to="/my">Mis libros</Link>
+            <Link to="/quotes">Mis cotizaciones</Link>
           </nav>
         </div>
 
@@ -41,6 +43,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<AllBooks />} />
             <Route path="/my" element={<MyBooks />} />
+            <Route path="/quotes" element={<Quotes />} />
           </Routes>
         </section>
         <Cart />

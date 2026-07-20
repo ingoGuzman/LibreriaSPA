@@ -31,13 +31,6 @@ export default function MyBooks() {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => {
-    setQuotes(getQuotes())
-    const handler = () => setQuotes(getQuotes())
-    window.addEventListener('quotesUpdated', handler)
-    return () => window.removeEventListener('quotesUpdated', handler)
-  }, [])
-
   const my = books.filter((b) => favorites.includes(b.id))
 
   return (
@@ -61,27 +54,6 @@ export default function MyBooks() {
           )}
         </div>
       )}
-
-      <h3>Mis cotizaciones</h3>
-      <div className="quotes">
-        {quotes.length === 0 ? (
-          <p>Aún no tienes cotizaciones.</p>
-        ) : (
-          <ul>
-            {quotes.map((q) => (
-              <li key={q.id} className="quote">
-                <strong>{new Date(q.date).toLocaleString()}</strong>
-                <div>
-                  {q.items.map((it) => (
-                    <div key={it.id}>{it.nombre} (x{it.qty})</div>
-                  ))}
-                </div>
-                <small>Estado: {q.status}</small>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
     </section>
   )
 }
