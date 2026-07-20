@@ -10,11 +10,25 @@ export default function MyBooks() {
   const [books, setBooks] = useState([])
   const [quotes, setQuotes] = useState([])
 
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
   useEffect(() => {
+    setLoading(true)
+    setError('')
+
     fetch('/api/libros')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Error ${r.status}`)
+        return r.json()
+      })
       .then((data) => setBooks(data.libros || []))
-      .catch(() => setBooks([]))
+      .catch((err) => {
+        console.error(err)
+        setBooks([])
+        setError('No se pudieron cargar los libros. Intenta de nuevo.')
+      })
+      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => {
@@ -28,23 +42,30 @@ export default function MyBooks() {
 
   return (
     <section>
-      <h2>My Books</h2>
+      <h2>Mis libros</h2>
 
-      <h3>My favorite books</h3>
-      <div className="grid">
-        {my.length === 0 ? (
-          <p>No favorites yet.</p>
-        ) : (
-          my.map((b) => (
-            <BookCard key={b.id} book={b} onToggle={toggle} onAdd={add} />
-          ))
-        )}
-      </div>
+      <h3>Mis libros favoritos</h3>
 
-      <h3>My quotes</h3>
+      {loading ? (
+        <p>Cargando libros...</p>
+      ) : error ? (
+        <p className="error">{error}</p>
+      ) : (
+        <div className="grid">
+          {my.length === 0 ? (
+            <p>Aún no tienes favoritos.</p>
+          ) : (
+            my.map((b) => (
+              <BookCard key={b.id} book={b} onToggle={toggle} onAdd={add} />
+            ))
+          )}
+        </div>
+      )}
+
+      <h3>Mis cotizaciones</h3>
       <div className="quotes">
         {quotes.length === 0 ? (
-          <p>No quotes yet.</p>
+          <p>Aún no tienes cotizaciones.</p>
         ) : (
           <ul>
             {quotes.map((q) => (
@@ -55,7 +76,7 @@ export default function MyBooks() {
                     <div key={it.id}>{it.nombre} (x{it.qty})</div>
                   ))}
                 </div>
-                <small>Status: {q.status}</small>
+                <small>Estado: {q.status}</small>
               </li>
             ))}
           </ul>

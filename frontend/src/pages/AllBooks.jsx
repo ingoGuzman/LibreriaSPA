@@ -5,25 +5,46 @@ import BookCard from '../components/BookCard.jsx'
 
 export default function AllBooks() {
   const [books, setBooks] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const { toggle } = useFavorites()
   const { add } = useCart()
 
   useEffect(() => {
-    // backend exposes /api/libros
+    setLoading(true)
+    setError('')
+
     fetch('/api/libros')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Error ${r.status}`)
+        return r.json()
+      })
       .then((data) => setBooks(data.libros || []))
-      .catch(() => setBooks([]))
+      .catch((err) => {
+        console.error(err)
+        setBooks([])
+        setError('No se pudo cargar el catálogo. Intenta de nuevo.')
+      })
+      .finally(() => setLoading(false))
   }, [])
 
   return (
     <section>
-      <h2>All Books</h2>
-      <div className="grid">
-        {books.map((b) => (
-          <BookCard key={b.id} book={b} onToggle={toggle} onAdd={add} />
-        ))}
-      </div>
+      <h2>Todos los libros</h2>
+
+      {loading ? (
+        <p>Cargando libros...</p>
+      ) : error ? (
+        <p className="error">{error}</p>
+      ) : books.length === 0 ? (
+        <p>No hay libros disponibles.</p>
+      ) : (
+        <div className="grid">
+          {books.map((b) => (
+            <BookCard key={b.id} book={b} onToggle={toggle} onAdd={add} />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

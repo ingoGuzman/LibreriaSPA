@@ -15,4 +15,4 @@ Run dev server:
 npm run dev
 ```
 
-The app expects an API endpoint at `/api/books` returning JSON array of books with `id`, `title`, and `author`.
+La app espera un endpoint de API en `/api/libros` que devuelva un JSON con una propiedad `libros`, donde cada libro tiene `id`, `nombre` y `autor`.

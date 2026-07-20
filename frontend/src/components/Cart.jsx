@@ -9,7 +9,7 @@ export default function Cart() {
 
   const handleRequestQuote = () => {
     if (items.length === 0) {
-      setMessage('Cart is empty')
+      setMessage('El carrito está vacío')
       setTimeout(() => setMessage(''), 2000)
       return
     }
@@ -18,34 +18,34 @@ export default function Cart() {
       id: `q_${Date.now()}`,
       date: new Date().toISOString(),
       items: items,
-      status: 'processing',
+      status: 'Procesando',
     }
 
     addQuote(quote)
     clear()
-    setMessage('Your quote is being processed')
+    setMessage('Tu cotización está siendo procesada')
     setTimeout(() => setMessage(''), 3000)
   }
 
   return (
     <aside className="cart">
-      <h3>Shopping Cart</h3>
+      <h3>Carrito de compras</h3>
       {items.length === 0 ? (
-        <p>No items in cart.</p>
+        <p>No hay artículos en el carrito.</p>
       ) : (
         <ul>
           {items.map((it) => (
             <li key={it.id}>
               <span>{it.nombre} (x{it.qty})</span>
-              <button className="small" onClick={() => remove(it.id)}>Remove</button>
+              <button className="small" onClick={() => remove(it.id)}>Eliminar</button>
             </li>
           ))}
         </ul>
       )}
       {message && <div className="notice">{message}</div>}
       <div className="cart-actions">
-        <button onClick={handleRequestQuote} disabled={items.length === 0}>Request Quote</button>
-        <button className="small" onClick={clear} disabled={items.length === 0}>Clear</button>
+        <button onClick={handleRequestQuote} disabled={items.length === 0}>Solicitar cotización</button>
+        <button className="small" onClick={clear} disabled={items.length === 0}>Limpiar</button>
       </div>
     </aside>
   )

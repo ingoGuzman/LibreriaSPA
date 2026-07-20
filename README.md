@@ -1,47 +1,82 @@
 # LibreríaSPA
 
-Proyecto de una SPA (Single Page Application) para una librería en línea con un frontend en React/Vite y una API en FastAPI.
+Proyecto de una SPA (Single Page Application) para una librería en línea con un frontend en React/Vite. El frontend consume datos de libros desde una API y gestiona el estado del carrito y favoritos en el navegador.
 
-## ¿Qué hace esta SPA?
+## Descripción del frontend
 
-La aplicación muestra un catálogo de libros usando datos que entrega la API. El usuario puede ver la lista de libros y realizar compras o pedidos que se guardan localmente en el navegador con `LocalStorage`.
+La aplicación se divide en las siguientes partes principales:
 
-Además, la app incluye una sección de frases (quotes) como parte de la experiencia. Por ahora las frases se muestran de forma estática, pero está planeado implementar otra API para manejarlas más adelante.
+- `src/main.jsx` — arranca la aplicación, envuelve la app con los providers de `Favorites` y `Cart` y monta el enrutador de React Router.
+- `src/App.jsx` — es el layout general. Contiene el header con la navegación y el selector de tema claro/oscuro. Renderiza las páginas de `Todos los libros` y `Mis libros`, y monta el componente `Cart` en la barra lateral.
+- `src/pages/AllBooks.jsx` — carga el catálogo de libros desde `/api/libros` usando `fetch`. Maneja los estados de carga y error, y muestra la lista de libros con `BookCard`.
+- `src/pages/MyBooks.jsx` — muestra los libros marcados como favoritos. También carga los mismos datos de la API y usa el estado de favoritos para filtrar la lista.
+- `src/components/BookCard.jsx` — representa cada libro con su título y autor. Permite marcar o desmarcar favoritos y agregar el libro al carrito.
+- `src/components/Cart.jsx` — muestra los items agregados al carrito, permite eliminar unidades, limpiar el carrito y solicitar una cotización local.
 
-## Estructura del proyecto
+## Flujo de datos y estado
 
-- `api/` — servidor en FastAPI que expone datos de libros.
-- `frontend/` — aplicación en React con Vite para la interfaz de usuario.
+1. Cuando la página de `Todos los libros` se monta, `AllBooks.jsx` llama a `/api/libros`.
+2. Durante la petición se muestra `Cargando libros...`.
+3. Si la petición falla, se muestra un mensaje de error en pantalla.
+4. Si la petición es exitosa, la lista de libros aparece como tarjetas individuales.
+5. Desde cada tarjeta se puede:
+   - agregar o quitar un libro de los favoritos,
+   - añadir un libro al carrito.
+6. El carrito se muestra siempre en la barra lateral con los libros seleccionados.
 
-## Cómo correr la API
+## LocalStorage y persistencia
+
+El frontend guarda datos en `localStorage` para mantener el estado entre recargas:
+
+- `tienda:cart` — almacena los items del carrito.
+- `tienda:favorites` — almacena los IDs de los libros favoritos.
+- `tienda:theme` — almacena el tema seleccionado (`light` o `dark`).
+
+De esta forma, cuando el usuario refresca la página, conserva:
+
+- los libros en el carrito,
+- los libros marcados como favoritos,
+- el modo claro u oscuro seleccionado.
+
+## Manejo de favoritos
+
+La lógica de favoritos está en `src/utils/useFavorites.jsx`:
+
+- Un contexto de React (`FavoritesContext`) proporciona los favoritos y una función `toggle`.
+- `toggle(id)` alterna el estado del libro en la lista de favoritos.
+- El estado se sincroniza con `localStorage` cada vez que cambia.
+
+## Manejo del carrito
+
+La lógica del carrito está en `src/utils/cart.jsx`:
+
+- Un contexto de React (`CartContext`) expone los items del carrito y las acciones `add`, `remove` y `clear`.
+- Cada libro agregado se guarda en `localStorage`.
+- El componente `Cart` lee los items y permite gestionar el carrito desde la interfaz.
+
+## Tema claro/oscuro
+
+El selector de tema está en `src/App.jsx` y usa el atributo `data-theme` en el elemento `html`.
+
+- El botón alterna entre `Modo oscuro` y `Modo claro`.
+- La selección se guarda en `localStorage` con la clave `tienda:theme`.
+- Los estilos de `src/styles.css` definen variables CSS distintas para tema claro y oscuro.
+
+## Estructura de archivos relevante
+
+- `frontend/src/main.jsx`
+- `frontend/src/App.jsx`
+- `frontend/src/pages/AllBooks.jsx`
+- `frontend/src/pages/MyBooks.jsx`
+- `frontend/src/components/BookCard.jsx`
+- `frontend/src/components/Cart.jsx`
+- `frontend/src/utils/cart.jsx`
+- `frontend/src/utils/useFavorites.jsx`
+- `frontend/src/styles.css`
+
+## Cómo correr solo el frontend
 
 1. Abre una terminal.
-2. Ve a la carpeta `api`:
-
-```bash
-cd api
-```
-
-3. Instala dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
-4. Inicia el servidor:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-5. Verifica que la API funcione en:
-
-- `http://127.0.0.1:8000/api/libros`
-- Documentación automática en `http://127.0.0.1:8000/docs`
-
-## Cómo correr el frontend
-
-1. Abre otra terminal.
 2. Ve a la carpeta `frontend`:
 
 ```bash
@@ -60,10 +95,8 @@ npm install
 npm run dev
 ```
 
-5. Abre la URL que muestre Vite en la terminal (normalmente `http://localhost:5173`).
+5. Abre la URL que muestre Vite en la terminal, normalmente `http://localhost:5173`.
 
-## Notas importantes
+## Nota
 
-- El frontend espera consumir la API de libros para mostrar el catálogo.
-- El carrito/ventas se gestiona localmente con `LocalStorage`.
-- La funcionalidad de quotes está integrada en la interfaz, y se planea reemplazarla o mejorarla usando una API dedicada más adelante.
+El README enfatiza el funcionamiento del SPA, su estado local y la persistencia. La parte de la API no se detalla en este documento, porque el foco es el frontend y su lógica interna.
